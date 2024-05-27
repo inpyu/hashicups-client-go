@@ -28,7 +28,7 @@ func (c *Client) GetCafes() ([]Cafe, error) {
 	return cafes, nil
 }
 
-func (c *Client) GetCafe(cafeID string) ([]Cafe, error) {
+func (c *Client) GetCafe(cafeID string) (*Cafe, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/cafes/%s", c.HostURL, cafeID), nil)
 	if err != nil {
 		return nil, err
@@ -39,13 +39,13 @@ func (c *Client) GetCafe(cafeID string) ([]Cafe, error) {
 		return nil, err
 	}
 
-	cafes := []Cafe{}
-	err = json.Unmarshal(body, &cafes)
+	cafe := Cafe{}
+	err = json.Unmarshal(body, &cafe)
 	if err != nil {
 		return nil, err
 	}
 
-	return cafes, nil
+	return &cafe, nil
 }
 
 func (c *Client) CreateCafe(cafes []Cafe) (*Cafe, error) {
