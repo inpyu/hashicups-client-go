@@ -39,13 +39,17 @@ func (c *Client) GetCafe(cafeID string) (*Cafe, error) {
 		return nil, err
 	}
 
-	cafe := Cafe{}
-	err = json.Unmarshal(body, &cafe)
+	var cafes []Cafe
+	err = json.Unmarshal(body, &cafes)
 	if err != nil {
 		return nil, err
 	}
 
-	return &cafe, nil
+	if len(cafes) == 0 {
+		return nil, fmt.Errorf("no cafe found with id %s", cafeID)
+	}
+
+	return &cafes[0], nil
 }
 
 func (c *Client) CreateCafe(cafes []Cafe) (*Cafe, error) {
